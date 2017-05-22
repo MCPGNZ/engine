@@ -1,0 +1,13 @@
+﻿## Ignore all
+*
+
+## Except
+!**.h
+!**.hpp
+!**.c
+!**.cpp
+
+# Git settings:
+!.gitignore
+!.gitattributes
+!.gitmodules
