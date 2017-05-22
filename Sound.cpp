@@ -29,6 +29,10 @@ namespace pk
         auto result = SoundSystem::_system->createSound(path.string().c_str(), FMOD_DEFAULT, nullptr, &_sound);
         logger::assert_cond(result == FMOD_OK, "Sound", "create(path)", "createSound failed");
 
+        if(!autoplay)
+        {
+            return;
+        }
         play();
     }
 
@@ -41,7 +45,7 @@ namespace pk
         exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
         exinfo.length = file.bytes();
 
-        auto result =  SoundSystem::_system->createSound(file.data(), FMOD_OPENMEMORY, &exinfo, &_sound);
+        auto result = SoundSystem::_system->createSound(file.data(), FMOD_OPENMEMORY, &exinfo, &_sound);
         logger::assert_cond(result == FMOD_OK, "Sound", "create(pcm)", "createSound");
 
         play();
@@ -59,6 +63,5 @@ namespace pk
 
         result = SoundSystem::_system->playSound(_sound, nullptr, false, &_channel);
         logger::assert_cond(result == FMOD_OK, "Sound", "play", "playSound failed");
-    
     }
 }

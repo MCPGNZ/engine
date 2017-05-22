@@ -25,17 +25,17 @@ namespace pk
         matrix4x4 view();
         matrix4x4 projection() const;
 
-        vec3d direction() const;
-        vec3d origin() const;
-        vec3d up() const;
+        vec3f direction() const;
+        vec3f origin() const;
+        vec3f up() const;
 
-        void direction(const vec3d& v);
-        void origin(const vec3d& v);
+        void direction(const vec3f& v);
+        void origin(const vec3f& v);
 
         Type type() const;
 
-        void ortographic(const vec2i& dimentions, const double near = 0.0, const double far = 10.0);
-        void perspective(const vec2i& dimentions, const degree fov = degree{45.0}, const double near = 0.1, const double far = 10.0);
+        void ortographic(const vec2i& dimentions, const float near = 0.0, const float far = 10.0);
+        void perspective(const vec2i& dimentions, const degree fov = degree{45.0}, const float near = 0.1, const float far = 10.0);
         #pragma endregion
 
     private:
@@ -45,19 +45,19 @@ namespace pk
         matrix4x4 _view;
         matrix4x4 _projection;
 
-        vec3d _origin = vec3d::zero;
-        vec3d _direction = vec3d::forward;
-        vec3d _up = vec3d::up;
+        vec3f _origin = vec3f::zero;
+        vec3f _direction = vec3f::forward;
+        vec3f _up = vec3f::up;
 
-        vec3d _forward;
-        vec3d _strafe;
+        vec3f _forward;
+        vec3f _strafe;
 
         vec2i _dimentions;
 
-        double _near;
-        double _far;
+        float _near;
+        float _far;
 
-        double _aspect;
+        float _aspect;
         radian _fov;
 
         bool _dirty = false;

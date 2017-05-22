@@ -95,7 +95,6 @@ int main()
     pk::SoundSystem audio{};
     pk::Sound sound{"data/music/audio.flac"};
 
-
     pk::FFT fft{*sound.channel()};
 
     renderer.set(target);
@@ -109,8 +108,6 @@ int main()
     camera.direction({0.0f, 0.0f, 1.0f});
 
     bool done = false;
-
-
     while(!done)
     {
         pixel_watcher.update();

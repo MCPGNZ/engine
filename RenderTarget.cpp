@@ -206,7 +206,7 @@ namespace pk
         ZeroMemory(&rasterizerStateDesc, sizeof(D3D11_RASTERIZER_DESC));
         rasterizerStateDesc.FillMode = D3D11_FILL_SOLID;
         rasterizerStateDesc.CullMode = D3D11_CULL_NONE;
-        rasterizerStateDesc.ScissorEnable = true;
+        rasterizerStateDesc.ScissorEnable = false;
         rasterizerStateDesc.DepthClipEnable = true;
 
         auto hr = device->CreateRasterizerState(&rasterizerStateDesc, _rasterizer.GetAddressOf());

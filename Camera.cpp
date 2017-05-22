@@ -23,22 +23,22 @@ namespace pk
         return _projection;
     }
 
-    vec3d Camera::direction() const
+    vec3f Camera::direction() const
     {
         return _direction;
     }
-    vec3d Camera::origin() const
+    vec3f Camera::origin() const
     {
         return _origin;
     }
-    vec3d Camera::up() const
+    vec3f Camera::up() const
     {
         return _up;
     }
 
-    void Camera::direction(const vec3d& dir)
+    void Camera::direction(const vec3f& dir)
     {
-        _up = math::cross(dir, vec3d::right);
+        _up = math::cross(dir, vec3f::right);
 
         _forward = math::normalize(dir);
         _strafe = math::normalize(math::cross(_up, dir));
@@ -47,7 +47,7 @@ namespace pk
 
         _dirty = true;
     }
-    void Camera::origin(const vec3d& position)
+    void Camera::origin(const vec3f& position)
     {
         _origin = position;
         _dirty = true;
@@ -58,7 +58,7 @@ namespace pk
         return _type;
     }
 
-    void Camera::ortographic(const vec2i& dimentions, const double near /* = 0.0 */, const double far /* = 10.0 */)
+    void Camera::ortographic(const vec2i& dimentions, const float near /* = 0.0 */, const float far /* = 10.0 */)
     {
         _type = Type::Orthogonal;
 
@@ -67,11 +67,11 @@ namespace pk
         _near = near;
         _far = far;
 
-        _projection = math::orthogonal(static_cast<vec2d>(dimentions), vec2d{_near, _far});
+        _projection = math::orthogonal(static_cast<vec2f>(dimentions), vec2f{_near, _far});
         _view = math::look(_origin, _direction, _up);
     }
 
-    void Camera::perspective(const vec2i& dimentions, const degree fov /*= 45.0*/, const double near /*= 0.1*/, const double far /*= 10.0*/)
+    void Camera::perspective(const vec2i& dimentions, const degree fov /*= 45.0*/, const float near /*= 0.1*/, const float far /*= 10.0*/)
     {
         _type = Type::Perspective;
 
@@ -81,9 +81,9 @@ namespace pk
         _near = near;
         _far = far;
 
-        _aspect = static_cast<double>(_dimentions.width) / static_cast<double>(_dimentions.height);
+        _aspect = static_cast<float>(_dimentions.width) / static_cast<float>(_dimentions.height);
 
-        _projection = math::perspective(_fov, _aspect, vec2d{_near, _far});
+        _projection = math::perspective(_fov, _aspect, vec2f{_near, _far});
         _view = math::look(_origin, _direction, _up);
     }
     #pragma endregion

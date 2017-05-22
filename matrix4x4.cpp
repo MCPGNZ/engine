@@ -20,23 +20,23 @@ namespace pk
         m13{0}, m23{0}, m33{0}, m43{0},
         m14{0}, m24{0}, m34{0}, m44{0}
     {}
-    matrix4x4::matrix4x4(const double v) :
+    matrix4x4::matrix4x4(const float v) :
         m11{v}, m21{v}, m31{v}, m41{v},
         m12{v}, m22{v}, m32{v}, m42{v},
         m13{v}, m23{v}, m33{v}, m43{v},
         m14{v}, m24{v}, m34{v}, m44{v}
     {}
     matrix4x4::matrix4x4(
-        const double n11, const double n21, const double n31, const double n41,
-        const double n12, const double n22, const double n32, const double n42,
-        const double n13, const double n23, const double n33, const double n43,
-        const double n14, const double n24, const double n34, const double n44) :
+        const float n11, const float n21, const float n31, const float n41,
+        const float n12, const float n22, const float n32, const float n42,
+        const float n13, const float n23, const float n33, const float n43,
+        const float n14, const float n24, const float n34, const float n44) :
         m11{n11}, m21{n21}, m31{n31}, m41{n41},
         m12{n12}, m22{n22}, m32{n32}, m42{n42},
         m13{n13}, m23{n23}, m33{n33}, m43{n43},
         m14{n14}, m24{n24}, m34{n34}, m44{n44}
     {}
-    matrix4x4::matrix4x4(const double* u) :
+    matrix4x4::matrix4x4(const float* u) :
         m11{u[0]}, m21{u[1]}, m31{u[2]}, m41{u[3]},
         m12{u[4]}, m22{u[5]}, m32{u[6]}, m42{u[7]},
         m13{u[8]}, m23{u[9]}, m33{u[10]}, m43{u[11]},
@@ -45,16 +45,16 @@ namespace pk
     #pragma endregion
 
     #pragma region public methods
-    vec3d matrix4x4::translation() const
+    vec3f matrix4x4::translation() const
     {
-        return vec3d{m41, m42, m43};
+        return vec3f{m41, m42, m43};
     }
-    vec3d matrix4x4::scale() const
+    vec3f matrix4x4::scale() const
     {
-        return vec3d{
-            math::length(vec3d{m11, m12, m13}),
-            math::length(vec3d{m21, m22, m23}),
-            math::length(vec3d{m31, m32, m33})
+        return vec3f{
+            math::length(vec3f{m11, m12, m13}),
+            math::length(vec3f{m21, m22, m23}),
+            math::length(vec3f{m31, m32, m33})
         };
     }
     #pragma endregion
@@ -77,19 +77,19 @@ namespace pk
             m14 != other.m14 || m24 != other.m24 || m34 != other.m34 || m44 != other.m44;
     }
 
-    double& matrix4x4::operator[] (const int i)
+    float& matrix4x4::operator[] (const int i)
     {
         return v[i];
     }
-    double matrix4x4::operator[] (const int i) const
+    float matrix4x4::operator[] (const int i) const
     {
         return v[i];
     }
-    double& matrix4x4::operator() (const int row, const int column)
+    float& matrix4x4::operator() (const int row, const int column)
     {
         return m[row][column];
     }
-    double matrix4x4::operator() (const int row, const int column) const
+    float matrix4x4::operator() (const int row, const int column) const
     {
         return m[row][column];
     }
@@ -126,7 +126,7 @@ namespace pk
         };
     }
 
-    matrix4x4 matrix4x4::operator-(const double& scalar) const
+    matrix4x4 matrix4x4::operator-(const float& scalar) const
     {
         return matrix4x4{
             m11 - scalar, m21 - scalar, m31 - scalar, m41 - scalar,
@@ -135,7 +135,7 @@ namespace pk
             m14 - scalar, m24 - scalar, m34 - scalar, m44 - scalar
         };
     }
-    matrix4x4 matrix4x4::operator* (const double& scalar) const
+    matrix4x4 matrix4x4::operator* (const float& scalar) const
     {
         return matrix4x4{
             m11 * scalar, m21 * scalar, m31 * scalar, m41 * scalar,
@@ -144,9 +144,9 @@ namespace pk
             m14 * scalar, m24 * scalar, m34 * scalar, m44 * scalar
         };
     }
-    matrix4x4 matrix4x4::operator/ (const double& scalar) const
+    matrix4x4 matrix4x4::operator/ (const float& scalar) const
     {
-        const double div = 1.0f / scalar;
+        const float div = 1.0f / scalar;
 
         return matrix4x4{
             m11  * div, m21  * div, m31  * div, m41  * div,
@@ -173,7 +173,7 @@ namespace pk
         return *this;
     }
 
-    matrix4x4& matrix4x4::operator+= (const double& scalar)
+    matrix4x4& matrix4x4::operator+= (const float& scalar)
     {
         m11 += scalar; m21 += scalar; m31 += scalar; m41 += scalar;
         m12 += scalar; m22 += scalar; m32 += scalar; m42 += scalar;
@@ -181,7 +181,7 @@ namespace pk
         m14 += scalar; m24 += scalar; m34 += scalar; m44 += scalar;
         return *this;
     }
-    matrix4x4& matrix4x4::operator-= (const double& scalar)
+    matrix4x4& matrix4x4::operator-= (const float& scalar)
     {
         m11 -= scalar; m21 -= scalar; m31 -= scalar; m41 -= scalar;
         m12 -= scalar; m22 -= scalar; m32 -= scalar; m42 -= scalar;
@@ -189,7 +189,7 @@ namespace pk
         m14 -= scalar; m24 -= scalar; m34 -= scalar; m44 -= scalar;
         return *this;
     }
-    matrix4x4& matrix4x4::operator*= (const double& scalar)
+    matrix4x4& matrix4x4::operator*= (const float& scalar)
     {
         m11 *= scalar; m21 *= scalar; m31 *= scalar; m41 *= scalar;
         m12 *= scalar; m22 *= scalar; m32 *= scalar; m42 *= scalar;
@@ -197,9 +197,9 @@ namespace pk
         m14 *= scalar; m24 *= scalar; m34 *= scalar; m44 *= scalar;
         return *this;
     }
-    matrix4x4& matrix4x4::operator/= (const double& scalar)
+    matrix4x4& matrix4x4::operator/= (const float& scalar)
     {
-        const double div = 1.0f / scalar;
+        const float div = 1.0f / scalar;
 
         m11 *= div; m21 *= div; m31 *= div; m41 *= div;
         m12 *= div; m22 *= div; m32 *= div; m42 *= div;
@@ -208,18 +208,18 @@ namespace pk
         return *this;
     }
 
-    vec3d operator*(const vec3d& v, const matrix4x4& m)
+    vec3f operator*(const vec3f& v, const matrix4x4& m)
     {
-        const double norm_inv = 1.0f / (m.m14 * v.x + m.m24 * v.y + m.m34 * v.z + m.m44);
+        const float norm_inv = 1.0f / (m.m14 * v.x + m.m24 * v.y + m.m34 * v.z + m.m44);
 
-        return vec3d{
+        return vec3f{
             (m.m11 * v.x + m.m21 * v.y + m.m31 * v.z + m.m41) * norm_inv,
             (m.m12 * v.x + m.m22 * v.y + m.m32 * v.z + m.m42) * norm_inv,
             (m.m13 * v.x + m.m23 * v.y + m.m33 * v.z + m.m43) * norm_inv
         };
     }
 
-    matrix4x4 operator* (const double& scalar, const matrix4x4& variable)
+    matrix4x4 operator* (const float& scalar, const matrix4x4& variable)
     {
         return variable * scalar;
     }
@@ -301,7 +301,7 @@ namespace pk
             };
         }
 
-        matrix4x4 scale(const vec3d& scale)
+        matrix4x4 scale(const vec3f& scale)
         {
             return matrix4x4{
                 scale.x, 0.0f,    0.0f,    0.0f,
@@ -310,7 +310,7 @@ namespace pk
                 0.0f,    0.0f,    0.0f,    1.0f
             };
         }
-        matrix4x4 translation(const vec3d& v)
+        matrix4x4 translation(const vec3f& v)
         {
             return matrix4x4{
                 1.0f, 0.0f, 0.0f, v.x,
@@ -320,12 +320,12 @@ namespace pk
             };
         }
 
-        matrix4x4 trs(const vec3d & position, const vec3<radian>& angles, const vec3d& scaling)
+        matrix4x4 trs(const vec3f & position, const vec3<radian>& angles, const vec3f& scaling)
         {
             return translation(position) * rotation(angles) * scale(scaling);
         }
 
-        double determinant(const matrix4x4& m)
+        float determinant(const matrix4x4& m)
         {
             return
                 m.v[12] * m.v[9] * m.v[6] * m.v[3] - m.v[8] * m.v[13] * m.v[6] * m.v[3] -
@@ -344,7 +344,7 @@ namespace pk
         matrix4x4 inverse(const matrix4x4& m)
         {
             matrix4x4 result;
-            double det;
+            float det;
             int i;
 
             result.v[0] =
@@ -483,20 +483,20 @@ namespace pk
             return result;
         }
 
-        vec3d translation(const matrix4x4& in)
+        vec3f translation(const matrix4x4& in)
         {
-            return vec3d{in.m41, in.m42, in.m43};
+            return vec3f{in.m41, in.m42, in.m43};
         }
-        vec3d scale(const matrix4x4& in)
+        vec3f scale(const matrix4x4& in)
         {
-            return vec3d{
-                math::length(vec3d{in.m11, in.m12, in.m13}),
-                math::length(vec3d{in.m21, in.m22, in.m23}),
-                math::length(vec3d{in.m31, in.m32, in.m33})
+            return vec3f{
+                math::length(vec3f{in.m11, in.m12, in.m13}),
+                math::length(vec3f{in.m21, in.m22, in.m23}),
+                math::length(vec3f{in.m31, in.m32, in.m33})
             };
         }
 
-        matrix4x4 look(const vec3d& origin, const vec3d& direction = vec3d::forward, const vec3d& up = vec3d::up)
+        matrix4x4 look(const vec3f& origin, const vec3f& direction = vec3f::forward, const vec3f& up = vec3f::up)
         {
             const auto z_axis = math::normalize(direction - origin);
             auto x_axis = math::cross(up, z_axis);
@@ -505,7 +505,7 @@ namespace pk
             x_axis = math::normalize(x_axis);
             y_axis = math::normalize(y_axis);
 
-            const auto dv = vec3d{
+            const auto dv = vec3f{
                 -math::dot(x_axis, origin),
                 -math::dot(y_axis, origin),
                 -math::dot(z_axis, origin)};
@@ -518,10 +518,10 @@ namespace pk
             };
         }
 
-        matrix4x4 orthogonal(const vec2d& size, const vec2d& z)
+        matrix4x4 orthogonal(const vec2f& size, const vec2f& z)
         {
-            const double near = z.x;
-            const double far = z.y;
+            const float near = z.x;
+            const float far = z.y;
 
             return matrix4x4{
                 2.0f / size.width, 0.0f,               0.0f, 0.0f,
@@ -530,9 +530,9 @@ namespace pk
                 0.0f,              0.0f,               near / (near - far), 1.0f
             };
         }
-        matrix4x4 perspective(const radian& fov, const double aspect, const vec2d& z)
+        matrix4x4 perspective(const radian& fov, const float aspect, const vec2f& z)
         {
-            const auto tan_half_fov = tan(fov.value * 0.5f);
+            const auto tan_half_fov = static_cast<float>(tan(fov.value * 0.5f));
             const auto inv_depth = 1.0f / (z.y - z.x);
             return matrix4x4{
                 1.0f / (aspect * tan_half_fov), 0.0f,                   0.0f,                          0.0f,
