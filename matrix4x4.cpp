@@ -15,32 +15,33 @@ namespace pk
 
     #pragma region Ctors
     matrix4x4::matrix4x4(void) :
-        m11{0}, m21{0}, m31{0}, m41{0},
-        m12{0}, m22{0}, m32{0}, m42{0},
-        m13{0}, m23{0}, m33{0}, m43{0},
-        m14{0}, m24{0}, m34{0}, m44{0}
+        m11{0}, m12{0}, m13{0}, m14{0},
+        m21{0}, m22{0}, m23{0}, m24{0},
+        m31{0}, m32{0}, m33{0}, m34{0},
+        m41{0}, m42{0}, m43{0}, m44{0}
     {}
+
     matrix4x4::matrix4x4(const float v) :
-        m11{v}, m21{v}, m31{v}, m41{v},
-        m12{v}, m22{v}, m32{v}, m42{v},
-        m13{v}, m23{v}, m33{v}, m43{v},
-        m14{v}, m24{v}, m34{v}, m44{v}
+        m11{v}, m12{v}, m13{v}, m14{v},
+        m21{v}, m22{v}, m23{v}, m24{v},
+        m31{v}, m32{v}, m33{v}, m34{v},
+        m41{v}, m42{v}, m43{v}, m44{v}
     {}
     matrix4x4::matrix4x4(
-        const float n11, const float n21, const float n31, const float n41,
-        const float n12, const float n22, const float n32, const float n42,
-        const float n13, const float n23, const float n33, const float n43,
-        const float n14, const float n24, const float n34, const float n44) :
-        m11{n11}, m21{n21}, m31{n31}, m41{n41},
-        m12{n12}, m22{n22}, m32{n32}, m42{n42},
-        m13{n13}, m23{n23}, m33{n33}, m43{n43},
-        m14{n14}, m24{n24}, m34{n34}, m44{n44}
+        const float n11, const float n12, const float n13, const float n14,
+        const float n21, const float n22, const float n23, const float n24,
+        const float n31, const float n32, const float n33, const float n34,
+        const float n41, const float n42, const float n43, const float n44) :
+        m11{n11}, m12{n21}, m13{n31}, m14{n41},
+        m21{n12}, m22{n22}, m23{n32}, m24{n42},
+        m31{n13}, m32{n23}, m33{n33}, m34{n43},
+        m41{n14}, m42{n24}, m43{n34}, m44{n44}
     {}
     matrix4x4::matrix4x4(const float* u) :
-        m11{u[0]}, m21{u[1]}, m31{u[2]}, m41{u[3]},
-        m12{u[4]}, m22{u[5]}, m32{u[6]}, m42{u[7]},
-        m13{u[8]}, m23{u[9]}, m33{u[10]}, m43{u[11]},
-        m14{u[12]}, m24{u[13]}, m34{u[14]}, m44{u[15]}
+        m11{u[0]}, m12{u[1]}, m13{u[2]}, m14{u[3]},
+        m21{u[4]}, m22{u[5]}, m23{u[6]}, m24{u[7]},
+        m31{u[8]}, m32{u[9]}, m33{u[10]}, m34{u[11]},
+        m41{u[12]}, m42{u[13]}, m43{u[14]}, m44{u[15]}
     {}
     #pragma endregion
 
@@ -63,18 +64,18 @@ namespace pk
     bool matrix4x4::operator==(const matrix4x4& other) const
     {
         return
-            m11 == other.m11 && m21 == other.m21 && m31 == other.m31 &&  m41 == other.m41 &&
-            m12 == other.m12 && m22 == other.m22 && m32 == other.m32 &&  m42 == other.m42 &&
-            m13 == other.m13 && m23 == other.m23 && m33 == other.m33 &&  m43 == other.m43 &&
-            m14 == other.m14 && m24 == other.m24 && m34 == other.m34 &&  m44 == other.m44;
+            m11 == other.m11 && m12 == other.m12 && m13 == other.m13 &&  m14 == other.m14 &&
+            m21 == other.m21 && m22 == other.m22 && m23 == other.m23 &&  m24 == other.m24 &&
+            m31 == other.m31 && m32 == other.m32 && m33 == other.m33 &&  m34 == other.m34 &&
+            m41 == other.m41 && m42 == other.m42 && m43 == other.m43 &&  m44 == other.m44;
     }
     bool matrix4x4::operator!=(const matrix4x4& other) const
     {
         return
-            m11 != other.m11 || m21 != other.m21 || m31 != other.m31 || m41 != other.m41 ||
-            m12 != other.m12 || m22 != other.m22 || m32 != other.m32 || m42 != other.m42 ||
-            m13 != other.m13 || m23 != other.m23 || m33 != other.m33 || m43 != other.m43 ||
-            m14 != other.m14 || m24 != other.m24 || m34 != other.m34 || m44 != other.m44;
+            m11 != other.m11 || m12 != other.m12 || m13 != other.m13 || m14 != other.m14 ||
+            m21 != other.m21 || m22 != other.m22 || m23 != other.m23 || m24 != other.m24 ||
+            m31 != other.m31 || m32 != other.m32 || m33 != other.m33 || m34 != other.m34 ||
+            m41 != other.m41 || m42 != other.m42 || m43 != other.m43 || m44 != other.m44;
     }
 
     float& matrix4x4::operator[] (const int i)
@@ -97,10 +98,10 @@ namespace pk
     matrix4x4 matrix4x4::operator-() const
     {
         return matrix4x4{
-            -m11, -m21, -m31, -m41,
-            -m12, -m22, -m32, -m42,
-            -m13, -m23, -m33, -m43,
-            -m14, -m24, -m34, -m44};
+            -m11, -m12, -m13, -m14,
+            -m21, -m22, -m23, -m24,
+            -m31, -m32, -m33, -m34,
+            -m41, -m42, -m43, -m44};
     }
     matrix4x4 matrix4x4::operator+() const
     {
@@ -110,38 +111,38 @@ namespace pk
     matrix4x4 matrix4x4::operator+ (const matrix4x4& other) const
     {
         return matrix4x4{
-            m11 + other.m11, m21 + other.m21, m31 + other.m31, m41 + other.m41,
-            m12 + other.m12, m22 + other.m22, m32 + other.m32, m42 + other.m42,
-            m13 + other.m13, m23 + other.m23, m33 + other.m33, m43 + other.m43,
-            m14 + other.m14, m24 + other.m24, m34 + other.m34, m44 + other.m44
+            m11 + other.m11, m12 + other.m12, m13 + other.m13, m14 + other.m14,
+            m21 + other.m21, m22 + other.m22, m23 + other.m23, m24 + other.m24,
+            m31 + other.m31, m32 + other.m32, m33 + other.m33, m34 + other.m34,
+            m41 + other.m41, m42 + other.m42, m43 + other.m43, m44 + other.m44
         };
     }
     matrix4x4 matrix4x4::operator- (const matrix4x4& other) const
     {
         return matrix4x4{
-            m11 - other.m11, m21 - other.m21, m31 - other.m31, m41 - other.m41,
-            m12 - other.m12, m22 - other.m22, m32 - other.m32, m42 - other.m42,
-            m13 - other.m13, m23 - other.m23, m33 - other.m33, m43 - other.m43,
-            m14 - other.m14, m24 - other.m24, m34 - other.m34, m44 - other.m44
+            m11 - other.m11, m12 - other.m12, m13 - other.m13, m14 - other.m14,
+            m21 - other.m21, m22 - other.m22, m23 - other.m23, m24 - other.m24,
+            m31 - other.m31, m32 - other.m32, m33 - other.m33, m34 - other.m34,
+            m41 - other.m41, m42 - other.m42, m43 - other.m43, m44 - other.m44
         };
     }
 
     matrix4x4 matrix4x4::operator-(const float& scalar) const
     {
         return matrix4x4{
-            m11 - scalar, m21 - scalar, m31 - scalar, m41 - scalar,
-            m12 - scalar, m22 - scalar, m32 - scalar, m42 - scalar,
-            m13 - scalar, m23 - scalar, m33 - scalar, m43 - scalar,
-            m14 - scalar, m24 - scalar, m34 - scalar, m44 - scalar
+            m11 - scalar, m12 - scalar, m13 - scalar, m14 - scalar,
+            m21 - scalar, m22 - scalar, m23 - scalar, m24 - scalar,
+            m31 - scalar, m32 - scalar, m33 - scalar, m34 - scalar,
+            m41 - scalar, m42 - scalar, m43 - scalar, m44 - scalar
         };
     }
     matrix4x4 matrix4x4::operator* (const float& scalar) const
     {
         return matrix4x4{
-            m11 * scalar, m21 * scalar, m31 * scalar, m41 * scalar,
-            m12 * scalar, m22 * scalar, m32 * scalar, m42 * scalar,
-            m13 * scalar, m23 * scalar, m33 * scalar, m43 * scalar,
-            m14 * scalar, m24 * scalar, m34 * scalar, m44 * scalar
+            m11 * scalar, m12 * scalar, m13 * scalar, m14 * scalar,
+            m21 * scalar, m22 * scalar, m23 * scalar, m24 * scalar,
+            m31 * scalar, m32 * scalar, m33 * scalar, m34 * scalar,
+            m41 * scalar, m42 * scalar, m43 * scalar, m44 * scalar
         };
     }
     matrix4x4 matrix4x4::operator/ (const float& scalar) const
@@ -149,73 +150,73 @@ namespace pk
         const float div = 1.0f / scalar;
 
         return matrix4x4{
-            m11  * div, m21  * div, m31  * div, m41  * div,
-            m12  * div, m22  * div, m32  * div, m42  * div,
-            m13  * div, m23  * div, m33  * div, m43  * div,
-            m14  * div, m24  * div, m34  * div, m44  * div
+            m11 * div, m12 * div, m13 * div, m14 * div,
+            m21 * div, m22 * div, m23 * div, m24 * div,
+            m31 * div, m32 * div, m33 * div, m34 * div,
+            m41 * div, m42 * div, m43 * div, m44 * div,
         };
     }
 
     matrix4x4& matrix4x4::operator+= (const matrix4x4& rhs)
     {
-        m11 += rhs.m11; m21 += rhs.m21; m31 += rhs.m31; m41 += rhs.m41;
-        m12 += rhs.m12; m22 += rhs.m22; m32 += rhs.m32; m42 += rhs.m42;
-        m13 += rhs.m13; m23 += rhs.m23; m33 += rhs.m33; m43 += rhs.m43;
-        m14 += rhs.m14; m24 += rhs.m24; m34 += rhs.m34; m44 += rhs.m44;
+        m11 += rhs.m11; m12 += rhs.m12; m13 += rhs.m13; m14 += rhs.m14;
+        m21 += rhs.m21; m22 += rhs.m22; m23 += rhs.m23; m24 += rhs.m24;
+        m31 += rhs.m31; m32 += rhs.m32; m33 += rhs.m33; m34 += rhs.m34;
+        m41 += rhs.m41; m42 += rhs.m42; m43 += rhs.m43; m44 += rhs.m44;
         return *this;
     }
     matrix4x4& matrix4x4::operator-= (const matrix4x4& rhs)
     {
-        m11 -= rhs.m11; m21 -= rhs.m21; m31 -= rhs.m31; m41 -= rhs.m41;
-        m12 -= rhs.m12; m22 -= rhs.m22; m32 -= rhs.m32; m42 -= rhs.m42;
-        m13 -= rhs.m13; m23 -= rhs.m23; m33 -= rhs.m33; m43 -= rhs.m43;
-        m14 -= rhs.m14; m24 -= rhs.m24; m34 -= rhs.m34; m44 -= rhs.m44;
+        m11 -= rhs.m11; m12 -= rhs.m12; m13 -= rhs.m13; m14 -= rhs.m14;
+        m21 -= rhs.m21; m22 -= rhs.m22; m23 -= rhs.m23; m24 -= rhs.m24;
+        m31 -= rhs.m31; m32 -= rhs.m32; m33 -= rhs.m33; m34 -= rhs.m34;
+        m41 -= rhs.m41; m42 -= rhs.m42; m43 -= rhs.m43; m44 -= rhs.m44;
         return *this;
     }
 
     matrix4x4& matrix4x4::operator+= (const float& scalar)
     {
-        m11 += scalar; m21 += scalar; m31 += scalar; m41 += scalar;
-        m12 += scalar; m22 += scalar; m32 += scalar; m42 += scalar;
-        m13 += scalar; m23 += scalar; m33 += scalar; m43 += scalar;
-        m14 += scalar; m24 += scalar; m34 += scalar; m44 += scalar;
+        m11 += scalar; m12 += scalar; m13 += scalar; m14 += scalar;
+        m21 += scalar; m22 += scalar; m23 += scalar; m24 += scalar;
+        m31 += scalar; m32 += scalar; m33 += scalar; m34 += scalar;
+        m41 += scalar; m42 += scalar; m43 += scalar; m44 += scalar;
         return *this;
     }
     matrix4x4& matrix4x4::operator-= (const float& scalar)
     {
-        m11 -= scalar; m21 -= scalar; m31 -= scalar; m41 -= scalar;
-        m12 -= scalar; m22 -= scalar; m32 -= scalar; m42 -= scalar;
-        m13 -= scalar; m23 -= scalar; m33 -= scalar; m43 -= scalar;
-        m14 -= scalar; m24 -= scalar; m34 -= scalar; m44 -= scalar;
+        m11 -= scalar; m12 -= scalar; m13 -= scalar; m14 -= scalar;
+        m21 -= scalar; m22 -= scalar; m23 -= scalar; m24 -= scalar;
+        m31 -= scalar; m32 -= scalar; m33 -= scalar; m34 -= scalar;
+        m41 -= scalar; m42 -= scalar; m43 -= scalar; m44 -= scalar;
         return *this;
     }
     matrix4x4& matrix4x4::operator*= (const float& scalar)
     {
-        m11 *= scalar; m21 *= scalar; m31 *= scalar; m41 *= scalar;
-        m12 *= scalar; m22 *= scalar; m32 *= scalar; m42 *= scalar;
-        m13 *= scalar; m23 *= scalar; m33 *= scalar; m43 *= scalar;
-        m14 *= scalar; m24 *= scalar; m34 *= scalar; m44 *= scalar;
+        m11 *= scalar; m12 *= scalar; m13 *= scalar; m14 *= scalar;
+        m21 *= scalar; m22 *= scalar; m23 *= scalar; m24 *= scalar;
+        m31 *= scalar; m32 *= scalar; m33 *= scalar; m34 *= scalar;
+        m41 *= scalar; m42 *= scalar; m43 *= scalar; m44 *= scalar;
         return *this;
     }
     matrix4x4& matrix4x4::operator/= (const float& scalar)
     {
         const float div = 1.0f / scalar;
 
-        m11 *= div; m21 *= div; m31 *= div; m41 *= div;
-        m12 *= div; m22 *= div; m32 *= div; m42 *= div;
-        m13 *= div; m23 *= div; m33 *= div; m43 *= div;
-        m14 *= div; m24 *= div; m34 *= div; m44 *= div;
+        m11 *= div; m12 *= div; m13 *= div; m14 *= div;
+        m21 *= div; m22 *= div; m23 *= div; m24 *= div;
+        m31 *= div; m32 *= div; m33 *= div; m34 *= div;
+        m41 *= div; m42 *= div; m43 *= div; m44 *= div;
         return *this;
     }
 
     vec3f operator*(const vec3f& v, const matrix4x4& m)
     {
-        const float norm_inv = 1.0f / (m.m14 * v.x + m.m24 * v.y + m.m34 * v.z + m.m44);
+        const float norm_inv = 1.0f / (m.m41 * v.x + m.m42 * v.y + m.m43 * v.z + m.m44);
 
         return vec3f{
-            (m.m11 * v.x + m.m21 * v.y + m.m31 * v.z + m.m41) * norm_inv,
-            (m.m12 * v.x + m.m22 * v.y + m.m32 * v.z + m.m42) * norm_inv,
-            (m.m13 * v.x + m.m23 * v.y + m.m33 * v.z + m.m43) * norm_inv
+            (m.m11 * v.x + m.m12 * v.y + m.m13 * v.z + m.m14) * norm_inv,
+            (m.m21 * v.x + m.m22 * v.y + m.m23 * v.z + m.m24) * norm_inv,
+            (m.m31 * v.x + m.m32 * v.y + m.m33 * v.z + m.m34) * norm_inv
         };
     }
 
@@ -294,10 +295,10 @@ namespace pk
         matrix4x4 transpose(const matrix4x4& m)
         {
             return matrix4x4{
-                m.m11, m.m12, m.m13, m.m14,
-                m.m21, m.m22, m.m23, m.m24,
-                m.m31, m.m32, m.m33, m.m34,
-                m.m41, m.m42, m.m43, m.m44
+                m.m11, m.m21, m.m31, m.m41,
+                m.m12, m.m22, m.m32, m.m42,
+                m.m13, m.m23, m.m33, m.m43,
+                m.m14, m.m24, m.m34, m.m44
             };
         }
 
@@ -322,7 +323,7 @@ namespace pk
 
         matrix4x4 srt(const vec3f & position, const vec3<radian>& angles, const vec3f& scaling)
         {
-            return scale(scaling) *  rotation(angles) * translation(position);
+            return translation(position) * rotation(angles) * scale(scaling);
         }
 
         float determinant(const matrix4x4& m)

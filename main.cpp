@@ -1,6 +1,7 @@
 #include <vld.h>
 
 #include <vector>
+#include <iostream>
 #include <initializer_list>
 
 #include "vec2.h"
@@ -60,6 +61,18 @@ int main()
     camera.perspective(pk::vec2i{32}, 45.0_deg, 0.1f, 200.0f);
     camera.origin({0.0f, 0.0f, -100.0f});
     camera.direction({0.0f, 0.0f, 1.0f});
+
+    pk::matrix4x4 x;
+    x.m11 = 1;
+    x.m12 = 2;
+    x.m13 = 3;
+    x.m14 = 4;
+    x.m21 = 5;
+    std::cout << x.m[0][0] << "\n";
+    std::cout << x.m[1][0] << "\n";
+    std::cout << x.m[2][0] << "\n";
+    std::cout << x.m[3][0] << "\n";
+    std::cout << x.m[0][1] << "\n";
 
     bool done = false;
     while(!done)

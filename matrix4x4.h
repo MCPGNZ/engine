@@ -22,10 +22,10 @@ namespace pk
             float m[4][4];
             struct
             {
-                float m11, m21, m31, m41;
-                float m12, m22, m32, m42;
-                float m13, m23, m33, m43;
-                float m14, m24, m34, m44;
+                float m11, m12, m13, m14;
+                float m21, m22, m23, m24;
+                float m31, m32, m33, m34;
+                float m41, m42, m43, m44;
             };
         };
         #pragma warning (default: 4201)
