@@ -17,6 +17,7 @@ namespace pk
     class Buffer;
     class Shader;
     class Sampler;
+    class Model;
 
     class Renderer
     {
@@ -37,6 +38,7 @@ namespace pk
         void set(Buffer& buffer);
         void set(Shader& shader);
         void set(Sampler& sampler);
+        void set(Model& model);
         #pragma endregion
 
         #pragma region Static Methods

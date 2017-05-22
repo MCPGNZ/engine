@@ -151,6 +151,8 @@ namespace pk
     {
         context->PSSetSamplers(0, 1, &sampler._sampler);
     }
+    void Renderer::set(Model& model)
+    {}
     #pragma endregion
 
     #pragma region Private Methods

@@ -313,16 +313,16 @@ namespace pk
         matrix4x4 translation(const vec3f& v)
         {
             return matrix4x4{
-                1.0f, 0.0f, 0.0f, v.x,
-                0.0f, 1.0f, 0.0f, v.y,
-                0.0f, 0.0f, 1.0f, v.z,
-                0.0f, 0.0f, 0.0f, 1.0f
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                v.x,  v.y,  v.z,  1.0f
             };
         }
 
-        matrix4x4 trs(const vec3f & position, const vec3<radian>& angles, const vec3f& scaling)
+        matrix4x4 srt(const vec3f & position, const vec3<radian>& angles, const vec3f& scaling)
         {
-            return translation(position) * rotation(angles) * scale(scaling);
+            return scale(scaling) *  rotation(angles) * translation(position);
         }
 
         float determinant(const matrix4x4& m)

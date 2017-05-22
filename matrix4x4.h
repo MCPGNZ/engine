@@ -86,7 +86,7 @@ namespace pk
 
     namespace math
     {
-        matrix4x4 trs(const vec3f& position, const vec3<radian>& angles, const vec3f& scale);
+        matrix4x4 srt(const vec3f& position, const vec3<radian>& angles, const vec3f& scale);
 
         matrix4x4 rotation_x(const radian& angle);
         matrix4x4 rotation_y(const radian& angle);

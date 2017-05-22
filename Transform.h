@@ -9,9 +9,10 @@ namespace pk
     public:
         matrix4x4 world();
 
-        vec3f position;
-        vec3f rotation;
-        vec3f scale;
+        vec3f position = vec3f::zero;
+        vec3f rotation = vec3f::zero;
+        vec3f scale = vec3f::one;
+
     private:
     };
 }
