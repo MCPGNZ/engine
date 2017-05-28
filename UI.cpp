@@ -1,4 +1,8 @@
 #include "UI.h"
+
+#include "json.hpp"
+#include "json_bindings.h"
+
 #include <string>
 #include <d3d11.h>
 #include <d3d11shader.h>
@@ -12,8 +16,7 @@
 #include "MessageDispatcher.h"
 
 #include "File.h"
-#include "json.hpp"
-#include "json_bindings.h"
+
 
 namespace pk
 {
@@ -23,9 +26,12 @@ namespace pk
     };
 
     #pragma region ctors/dtors
-    Gui::Gui(Window& window)
+    Gui::Gui(Window& window) :
+        _blend{Blend::Alpha}
     {
         _window = &window;
+        _depth.create(false, false);
+        _rasterizer.create(true);
 
         if(!QueryPerformanceFrequency((LARGE_INTEGER *) &g_TicksPerSecond))
             return;
@@ -65,6 +71,7 @@ namespace pk
         _pixelShader = Shader{"data/shaders/ui_ps.hlsl"};
 
         registerInput();
+        style("data/settings/gui.json");
     }
     Gui::~Gui(void)
     {
@@ -76,7 +83,9 @@ namespace pk
     void Gui::refresh()
     {
         if(!g_pFontSampler)
-            ImGui_ImplDX11_CreateDeviceObjects();
+        {
+            createFont();
+        }
 
         ImGuiIO& io = ImGui::GetIO();
 
@@ -110,7 +119,7 @@ namespace pk
 
     void Gui::style(const std::filesystem::path& path)
     {
-        json j = json::parse(File::readAll(path));
+        json j = json::parse(File::readAll(path).c_str());
         auto& style = ImGui::GetStyle();
 
         style.WindowPadding = j["WindowPadding"].get<vec2f>();
@@ -218,13 +227,11 @@ namespace pk
         renderer.set(_pixelShader);
 
         renderer.set(_sampler);
+        renderer.set(_blend);
+        _depth.bind(renderer);
+        _rasterizer.bind(renderer);
 
         ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-        // Setup render state
-        const float blend_factor[4] = {0.f, 0.f, 0.f, 0.f};
-        ctx->OMSetBlendState(g_pBlendState, blend_factor, 0xffffffff);
-        ctx->RSSetState(g_pRasterizerState);
 
         // Render command lists
         int vtx_offset = 0;
@@ -262,50 +269,15 @@ namespace pk
         _font = Texture{{vec2i{width, height}, pixels}};
         io.Fonts->TexID = _font.id();
     }
-    bool Gui::ImGui_ImplDX11_CreateDeviceObjects()
-    {
-        if(!Renderer::_device())
-            return false;
-
-        // Create the blending setup
-        {
-            D3D11_BLEND_DESC desc;
-            ZeroMemory(&desc, sizeof(desc));
-            desc.AlphaToCoverageEnable = false;
-            desc.RenderTarget[0].BlendEnable = true;
-            desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-            desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-            desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-            desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
-            desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-            desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-            desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-            Renderer::_device()->CreateBlendState(&desc, &g_pBlendState);
-        }
-
-        // Create the rasterizer state
-        {
-            D3D11_RASTERIZER_DESC desc;
-            ZeroMemory(&desc, sizeof(desc));
-            desc.FillMode = D3D11_FILL_SOLID;
-            desc.CullMode = D3D11_CULL_NONE;
-            desc.ScissorEnable = true;
-            desc.DepthClipEnable = true;
-            Renderer::_device()->CreateRasterizerState(&desc, &g_pRasterizerState);
-        }
-
-        createFont();
-        return true;
-    }
 
     void Gui::resizeBuffers(ImDrawData* data)
     {
-        if(_vertexBuffer.count() < data->TotalVtxCount)
+        if(_vertexBuffer.count() < data->TotalVtxCount || _vertexBuffer.empty())
         {
             _vertexBuffer.create(nullptr, (data->TotalVtxCount + 5000) * sizeof(ImDrawVert), sizeof(ImDrawVert),
                 pk::BufferBind::Vertex, pk::BufferUsage::Dynamic);
         }
-        if(_indexBuffer.count() < data->TotalIdxCount)
+        if(_indexBuffer.count() < data->TotalIdxCount || _indexBuffer.empty())
         {
             _indexBuffer.create(nullptr, (data->TotalIdxCount + 10000) * sizeof(ImDrawIdx), sizeof(ImDrawIdx),
                 pk::BufferBind::Index, pk::BufferUsage::Dynamic);
@@ -322,7 +294,6 @@ namespace pk
         });
 
         token += MessageDispatcher::Register([](const keyDown& button){
-            logger::warning("fdfdf");
             ImGui::GetIO().KeysDown[(int) button.key] = true;
         });
 

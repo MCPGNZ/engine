@@ -27,7 +27,6 @@ namespace pk
         create_swapchain(_handle, _size);
         create_render_target_view();
         create_depth_stencil_view();
-        create_depth_stencil_state();
         create_rasterizer();
     }
     void RenderTarget::resize(const vec2i& size)
@@ -174,27 +173,7 @@ namespace pk
         hr = device->CreateDepthStencilView(_depthStencil.Get(), &depthStencilViewDesc, _depthStencilView.GetAddressOf());
         logger::assert_hr(hr, "RenderTarget", "create_depth_stencil_view", "CreateDepthStencilView");
     }
-    void RenderTarget::create_depth_stencil_state()
-    {
-        // release depth-stencil in case it was created before
-        _depthStencilState = nullptr;
 
-        const auto& device = Renderer::_device();
-
-        D3D11_DEPTH_STENCIL_DESC desc;
-        ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
-
-        desc.DepthEnable = false;
-        desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-        desc.DepthFunc = D3D11_COMPARISON_ALWAYS;
-        desc.StencilEnable = false;
-        desc.FrontFace.StencilFailOp = desc.FrontFace.StencilDepthFailOp = desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-        desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-        desc.BackFace = desc.FrontFace;
-
-        auto hr = device->CreateDepthStencilState(&desc, _depthStencilState.GetAddressOf());
-        logger::assert_hr(hr, "RenderTarget", "create_depth_stencil_state", "CreateDepthStencilState(WRITE_ENABLE)");
-    }
     void RenderTarget::create_rasterizer()
     {
         // release rasterizer in case it was created before

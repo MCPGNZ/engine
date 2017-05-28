@@ -1,6 +1,8 @@
 #include "FileWatcher.h"
 #include "File.h"
 
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 #include "logger.h"

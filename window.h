@@ -58,6 +58,9 @@ namespace pk
         bool hasFocus() const;
         void focus();
 
+        float aspect() const;
+        void center();
+
         HWND getHandle() const;
 
         void visible(const bool state);

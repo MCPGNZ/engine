@@ -38,7 +38,6 @@ namespace pk
 
         Com<ID3D11Texture2D>         _depthStencil = nullptr;
         Com<ID3D11DepthStencilView>  _depthStencilView = nullptr;
-        Com<ID3D11DepthStencilState> _depthStencilState = nullptr;
 
         Com<ID3D11RasterizerState>  _rasterizer = nullptr;
 
@@ -54,7 +53,6 @@ namespace pk
         void create_swapchain(const window_handle& handle, const vec2i& size);
         void create_render_target_view();
         void create_depth_stencil_view();
-        void create_depth_stencil_state();
         void create_rasterizer();
         #pragma endregion
 

@@ -17,4 +17,10 @@ namespace pk
 
         return result;
     }
+    void File::saveAll(const std::filesystem::path & path, const std::string & data)
+    {
+        std::ofstream file{path};
+        file << data;
+        file.close();
+    }
 }

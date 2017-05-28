@@ -39,6 +39,8 @@ namespace pk
         #pragma region Ctors
         Shader(void) = default;
         Shader(const std::filesystem::path& path, std::vector<Layout> input = {});
+
+        Shader& operator=(const Shader& other) = default;
         #pragma endregion
 
         #pragma region Public methods

@@ -158,7 +158,7 @@ namespace pk
         result._vertices[3].normal = {0.0f, 0.0f, -1.0f};
         result._vertices[3].texcoord = {1.0f, 0.0f};
 
-        result._indices = {0, 1, 2, 3, 2, 0};
+        result._indices = {0, 1, 2, 1, 2, 3};
 
         return result;
     }

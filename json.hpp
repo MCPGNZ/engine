@@ -26,6 +26,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE  OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifdef min
+#undef min
+#endif
+
+#ifdef max
+#undef max
+#endif
+
 #ifndef NLOHMANN_JSON_HPP
 #define NLOHMANN_JSON_HPP
 
@@ -14514,5 +14522,3 @@ inline nlohmann::json::json_pointer operator "" _json_pointer(const char* s, std
 #undef JSON_DEPRECATED
 
 #endif
-
-using json = nlohmann::json;

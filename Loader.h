@@ -11,6 +11,7 @@
 
 
 #include "json.hpp"
+#include "json_bindings.h"
 
 
 namespace pk

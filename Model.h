@@ -14,16 +14,6 @@ namespace pk
 {
     class Model
     {
-    private:
-        void* data = nullptr;
-
-        Buffer vertexBuffer;
-        Buffer indexBuffer;
-        int count = 0;
-
-        Topology topology = Topology::TriangleList;
-
-        friend class Graphics;
     public:
         Model(void) = default;
         Model(const Shader& shader, const Mesh& mesh);
@@ -35,9 +25,17 @@ namespace pk
         Model(Model&&) = default;
         Model& operator=(Model&&) = default;
 
-        void create(Shader& shader, const Mesh& mesh);
         void create(const Shader& shader, const Mesh& mesh);
 
-        void draw() const;
+    private:
+        void* _data = nullptr;
+
+        Buffer _vertexBuffer;
+        Buffer _indexBuffer;
+        int _count = 0;
+
+        Topology _topology = Topology::TriangleList;
+
+        friend class Renderer;
     };
 }

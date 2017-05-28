@@ -18,6 +18,7 @@ namespace pk
     class Shader;
     class Sampler;
     class Model;
+    class BlendState;
 
     class Renderer
     {
@@ -33,12 +34,16 @@ namespace pk
         void clear(const Color& color = Color::transparent);
         void present();
 
+        void draw(const Model& model);
+
         void set(RenderTarget& renderTarget);
-        void set(Viewport& viewport);
-        void set(Buffer& buffer);
         void set(Shader& shader);
-        void set(Sampler& sampler);
-        void set(Model& model);
+
+        void set(const Viewport& viewport);
+        void set(const Buffer& buffer);
+        void set(const Sampler& sampler);
+        void set(const Model& model);
+        void set(const BlendState& blendState);
         #pragma endregion
 
         #pragma region Static Methods
@@ -49,7 +54,7 @@ namespace pk
     private:
         #pragma region Private Variables
         RenderTarget* _renderTarget = nullptr;
-        Viewport* _viewport = nullptr;
+        const Viewport* _viewport = nullptr;
         #pragma endregion
 
         #pragma region Static Variables
@@ -62,9 +67,9 @@ namespace pk
 
         #pragma region Private Methods
         void initialize();
-        void bind(RenderTarget* renderTarget);
-        void bind(Viewport* viewport);
-        void bind(Shader* shader);
+        void bind(const RenderTarget* renderTarget);
+        void bind(const Viewport* viewport);
+        void bind(const Shader* shader);
         #pragma endregion
     };
 }

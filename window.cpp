@@ -1,5 +1,11 @@
 #include "Window.h"
+
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
 #include <windowsx.h>
+#include <shellapi.h>
+
+#include "logger.h"
 
 #include "MessageDispatcher.h"
 #include "WindowMessages.h"
@@ -36,6 +42,8 @@ namespace pk
         size(s);
         ShowWindow(handle, true);
         setMouseVisible(true);
+
+        DragAcceptFiles(handle, true);
 
         isOpenFlag = true;
     }
@@ -150,6 +158,24 @@ namespace pk
     void Window::focus()
     {
         SetForegroundWindow(handle);
+    }
+
+    void Window::center()
+    {
+        RECT rc;
+
+        GetWindowRect(handle, &rc);
+
+        int xPos = (GetSystemMetrics(SM_CXSCREEN) - rc.right) / 2;
+        int yPos = (GetSystemMetrics(SM_CYSCREEN) - rc.bottom) / 2;
+
+        SetWindowPos(handle, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    }
+
+    float Window::aspect() const
+    {
+        auto s = size();
+        return (float) s.y / (float) s.x;
     }
     #pragma endregion
 
@@ -426,6 +452,27 @@ namespace pk
                     e.ascii.key = wparam;
                     MessageDispatcher::Signal(ascii{(unsigned short) wparam}, this);
                 }
+                break;
+            }
+            case WM_DROPFILES:
+            {
+                TCHAR lpszFile[MAX_PATH] = {0};
+                UINT fileCount = 0;
+                HDROP hDrop = (HDROP) wparam;
+
+                fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, NULL);
+
+                for(int i = 0; i < fileCount; ++i)
+                {
+                    lpszFile[0] = '\0';
+                    if(DragQueryFile(hDrop, i, lpszFile, MAX_PATH))
+                    {
+                        MessageDispatcher::Signal(dropped{std::string{lpszFile}}, this);
+                    }
+                }
+
+                DragFinish(hDrop);
+                break;
             }
         }
 

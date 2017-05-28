@@ -11,18 +11,13 @@ namespace pk
         if(path.extension() == ".json")
         {
             auto& data = File::readAll(path);
-            json j = json::parse(data);
+            json j = json::parse(data.c_str());
 
             // special iterator member functions for objects
             for(json::iterator it = j.begin(); it != j.end(); ++it)
             {
                 auto key = it.key();
                 auto value = it.value();
-
-                if(std::contains(_loaders, key))
-                {
-                    _loaders[key](value);
-                }
             }
         }
     }

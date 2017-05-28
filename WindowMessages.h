@@ -4,6 +4,8 @@
 #include "mouse.h"
 #include "Event.h"
 
+#include "Filesystem.h"
+
 namespace pk
 {
     namespace messages
@@ -15,6 +17,11 @@ namespace pk
 
             struct keyDown { Keyboard::Key key; };
             struct keyUp { Keyboard::Key key; };
+
+            struct dropped
+            {
+                const std::filesystem::path path;
+            };
 
             struct mouseDown
             {

@@ -58,15 +58,16 @@ namespace pk
         vec2& operator*= (const vec2& rhs);
         vec2& operator/= (const vec2& rhs);
 
-        vec2 operator+ (const T rhs) const;
-        vec2 operator- (const T rhs) const;
-        vec2 operator* (const T rhs) const;
-        vec2 operator/ (const T rhs) const;
 
-        vec2& operator+= (const T rhs);
-        vec2& operator-= (const T rhs);
-        vec2& operator*= (const T rhs);
-        vec2& operator/= (const T rhs);
+        template <typename U> vec2 operator+ (const U rhs) const;
+        template <typename U> vec2 operator- (const U rhs) const;
+        template <typename U> vec2 operator* (const U rhs) const;
+        template <typename U> vec2 operator/ (const U rhs) const;
+
+        template <typename U> vec2& operator+= (const U rhs);
+        template <typename U> vec2& operator-= (const U rhs);
+        template <typename U> vec2& operator*= (const U rhs);
+        template <typename U> vec2& operator/= (const U rhs);
         #pragma endregion
 
         #pragma region Casts
@@ -100,40 +101,6 @@ namespace pk
 
     template <typename T> vec2<T> vec2<T>::maximum();
     template <typename T> vec2<T> vec2<T>::minimum();
-
-    template <typename T> bool vec2<T>::operator==(const vec2<T>& rhs) const;
-    template <typename T> bool vec2<T>::operator!=(const vec2<T>& rhs) const;
-
-    template <typename T> T vec2<T>::operator[](const int i) const;
-    template <typename T> T& vec2<T>::operator[](const int i);
-
-    template <typename T> vec2<T> vec2<T>::operator-() const;
-    template <typename T> vec2<T> vec2<T>::operator+() const;
-
-    template <typename T> vec2<T> vec2<T>::operator+ (const vec2<T>& rhs) const;
-    template <typename T> vec2<T> vec2<T>::operator- (const vec2<T>& rhs) const;
-    template <typename T> vec2<T> vec2<T>::operator* (const vec2<T>& rhs) const;
-
-    template <typename T> vec2<T> vec2<T>::operator/ (const vec2<T>& rhs) const;
-
-    template <typename T> vec2<T>& vec2<T>::operator+= (const vec2<T>& rhs);
-    template <typename T> vec2<T>& vec2<T>::operator-= (const vec2<T>& rhs);
-    template <typename T> vec2<T>& vec2<T>::operator*= (const vec2<T>& rhs);
-    template <typename T> vec2<T>& vec2<T>::operator/= (const vec2<T>& rhs);
-
-    template <typename T> vec2<T> vec2<T>::operator+ (const T rhs) const;
-    template <typename T> vec2<T> vec2<T>::operator- (const T rhs) const;
-    template <typename T> vec2<T> vec2<T>::operator* (const T rhs) const;
-    template <typename T> vec2<T> vec2<T>::operator/ (const T rhs) const;
-
-    template <typename T> vec2<T>& vec2<T>::operator+= (const T rhs);
-    template <typename T> vec2<T>& vec2<T>::operator-= (const T rhs);
-    template <typename T> vec2<T>& vec2<T>::operator*= (const T rhs);
-    template <typename T> vec2<T>& vec2<T>::operator/= (const T rhs);
-
-    template <typename T> vec2<T> operator+(const T scalar, const vec2<T>& rhs);
-    template <typename T> vec2<T> operator*(const T scalar, const vec2<T>& rhs);
-    template <typename T> vec2<T> operator/(const T scalar, const vec2<T>& rhs);
 }
 
 
@@ -225,43 +192,44 @@ namespace pk
         return *this;
     }
 
-    template <typename T> vec2<T> vec2<T>::operator+ (const T rhs) const
+
+    template <typename T> template <typename U> vec2<T> vec2<T>::operator+ (const U rhs) const
     {
-        return vec2{x + rhs, y + rhs};
+        return vec2{(T) (x + rhs), (T) (y + rhs)};
     }
-    template <typename T> vec2<T> vec2<T>::operator- (const T rhs) const
+    template <typename T> template <typename U> vec2<T> vec2<T>::operator- (const U rhs) const
     {
-        return vec2{x - rhs, y - rhs};
+        return vec2{(T) (x - rhs), (T) (y - rhs)};
     }
-    template <typename T> vec2<T> vec2<T>::operator* (const T rhs) const
+    template <typename T> template <typename U> vec2<T> vec2<T>::operator* (const U rhs) const
     {
-        return vec2{x * rhs, y * rhs};
+        return vec2{(T) (x * rhs), (T) (y * rhs)};
     }
-    template <typename T> vec2<T> vec2<T>::operator/ (const T rhs) const
+    template <typename T> template <typename U> vec2<T> vec2<T>::operator/ (const U rhs) const
     {
-        const T inv = 1 / rhs;
-        return vec2{x * inv, y * inv};
+        const U inv = 1 / rhs;
+        return vec2{(T) (x * inv),(T) (y * inv)};
     }
 
-    template <typename T> vec2<T>& vec2<T>::operator+= (const T rhs)
+    template <typename T> template <typename U> vec2<T>& vec2<T>::operator+= (const U rhs)
     {
         x += rhs;
         y += rhs;
         return *this;
     }
-    template <typename T> vec2<T>& vec2<T>::operator-= (const T rhs)
+    template <typename T> template <typename U> vec2<T>& vec2<T>::operator-= (const U rhs)
     {
         x -= rhs;
         y -= rhs;
         return *this;
     }
-    template <typename T> vec2<T>& vec2<T>::operator*= (const T rhs)
+    template <typename T> template <typename U> vec2<T>& vec2<T>::operator*= (const U rhs)
     {
         x *= rhs;
         y *= rhs;
         return *this;
     }
-    template <typename T> vec2<T>& vec2<T>::operator/= (const T rhs)
+    template <typename T> template <typename U> vec2<T>& vec2<T>::operator/= (const U rhs)
     {
         const T inv = 1 / rhs;
         x *= inv;

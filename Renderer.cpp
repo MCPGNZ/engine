@@ -14,6 +14,7 @@
 #include "Model.h"
 #include "Buffer.h"
 #include "Sampler.h"
+#include "BlendState.h"
 
 namespace pk
 {
@@ -104,6 +105,11 @@ namespace pk
         logger::assert_hr(hr, "Renderer", "present", "target->swapChain->Present(0, 0)");
     }
 
+    void Renderer::draw(const Model& model)
+    {
+        context->DrawIndexed(model._count, 0, 0);
+    }
+
     void Renderer::set(RenderTarget& renderTarget)
     {
         renderTarget._renderer = this;
@@ -117,12 +123,12 @@ namespace pk
             bind(_viewport);
         }
     }
-    void Renderer::set(Viewport& viewport)
+    void Renderer::set(const Viewport& viewport)
     {
         _viewport = &viewport;
         bind(_viewport);
     }
-    void Renderer::set(Buffer& buffer)
+    void Renderer::set(const Buffer& buffer)
     {
         switch(buffer.type())
         {
@@ -147,12 +153,26 @@ namespace pk
         shader._renderer = this;
         bind(&shader);
     }
-    void Renderer::set(Sampler& sampler)
+    void Renderer::set(const Sampler& sampler)
     {
-        context->PSSetSamplers(0, 1, &sampler._sampler);
+        context->PSSetSamplers(0, 1, sampler._sampler.GetAddressOf());
     }
-    void Renderer::set(Model& model)
-    {}
+    void Renderer::set(const Model& model)
+    {
+        auto context = Renderer::_context();
+
+        unsigned stride = static_cast<unsigned>(model._vertexBuffer.elementSize);
+        unsigned offset = 0;
+
+        context->IASetPrimitiveTopology(dx::Convert(model._topology));
+        context->IASetVertexBuffers(0, 1, model._vertexBuffer.address.GetAddressOf(), &stride, &offset);
+        context->IASetIndexBuffer(model._indexBuffer.address.Get(), DXGI_FORMAT_R32_UINT, 0);
+    }
+    void Renderer::set(const BlendState& blendState)
+    {
+        const float blend_factor[4] = {0.f, 0.f, 0.f, 0.f};
+        context->OMSetBlendState(blendState._state.Get(), blend_factor, 0xffffffff);
+    }
     #pragma endregion
 
     #pragma region Private Methods
@@ -179,15 +199,14 @@ namespace pk
             "Renderer", "initialize", "D3D_FEATURE_LEVEL < D3D_FEATURE_LEVEL_11_0");
     }
 
-    void Renderer::bind(RenderTarget* renderTarget)
+    void Renderer::bind(const RenderTarget* renderTarget)
     {
         // update device state
         context->RSSetState(_renderTarget->_rasterizer.Get());
-        context->OMSetDepthStencilState(_renderTarget->_depthStencilState.Get(), 0);
         context->OMSetRenderTargets(1, _renderTarget->_renderTargetView.GetAddressOf(),
             _renderTarget->_depthStencilView.Get());
     }
-    void Renderer::bind(Viewport* viewport)
+    void Renderer::bind(const Viewport* viewport)
     {
         // check, if render-target was set
         if(_renderTarget == nullptr) return;
@@ -204,7 +223,7 @@ namespace pk
         // update device state
         context->RSSetViewports(1, &vp);
     }
-    void Renderer::bind(Shader* shader)
+    void Renderer::bind(const Shader* shader)
     {
         // check, if vertex shader was created
         if(shader->vertexShader != nullptr)

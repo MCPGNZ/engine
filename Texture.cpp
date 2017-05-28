@@ -6,7 +6,7 @@
 namespace pk
 {
     #pragma region Ctors
-    Texture::Texture(const std::string& path)
+    Texture::Texture(const std::filesystem::path& path)
     {
         create(path);
     }
@@ -14,10 +14,14 @@ namespace pk
     {
         create(image);
     }
+    bool Texture::operator==(const Texture & other) const
+    {
+        return _shaderView == other._shaderView;
+    }
     #pragma endregion
 
     #pragma region Public methods
-    void Texture::create(const std::string& path)
+    void Texture::create(const std::filesystem::path& path)
     {
         create(Image{path});
     }

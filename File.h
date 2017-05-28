@@ -11,6 +11,7 @@ namespace pk
     public:
         #pragma region Public methods
         static std::string readAll(const std::filesystem::path& path);
+        static void saveAll(const std::filesystem::path& path, const std::string& data);
         #pragma endregion
     };
 }

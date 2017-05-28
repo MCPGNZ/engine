@@ -5,6 +5,7 @@
 #include <d3d11.h>
 
 #include "GPUDesc.h"
+#include "Filesystem.h"
 
 namespace pk
 {
@@ -14,12 +15,14 @@ namespace pk
     public:
         #pragma region Ctors
         Texture(void) = default;
-        Texture(const std::string& path);
+        Texture(const std::filesystem::path& path);
         Texture(const Image& image);
+
+        bool operator==(const Texture& other) const;
         #pragma endregion
 
         #pragma region Public methods
-        void create(const std::string& path);
+        void create(const std::filesystem::path& path);
         void create(const Image& image);
 
         void* id() const;

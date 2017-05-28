@@ -1,4 +1,5 @@
 #include "imgui.h"
+#include "imgui_draganddrop.h"
 
 #include "window.h"
 #include "Shader.h"
@@ -8,6 +9,9 @@
 #include "Texture.h"
 #include "matrix4x4.h"
 #include "Sampler.h"
+#include "BlendState.h"
+#include "DepthState.h"
+#include "Rasterizer.h"
 
 #include "MessageToken.h"
 
@@ -39,6 +43,9 @@ namespace pk
 
         Texture _font;
         Sampler _sampler;
+        BlendState _blend;
+        DepthState _depth;
+        Rasterizer _rasterizer;
 
         matrix4x4 _projection;
 
@@ -48,12 +55,8 @@ namespace pk
         INT64 g_TicksPerSecond = 0;
 
         ID3D11InputLayout*       g_pInputLayout = NULL;
-
         ID3D11SamplerState*      g_pFontSampler = NULL;
-        ID3D11RasterizerState*   g_pRasterizerState = NULL;
-        ID3D11BlendState*        g_pBlendState = NULL;
 
-        bool ImGui_ImplDX11_CreateDeviceObjects();
         void createFont();
 
         void render(Renderer& renderer, ImDrawData* data);
